@@ -13,8 +13,10 @@ class PlateGame extends JFrame implements ActionListener{
 	private int[][] visible ;
 	int checkIsAllCorrect=0,checkIsOpened=0;
 	int i,j,k;
-	
-	Icon pic =new ImageIcon("Image/bomb.jpg");
+        
+	//set path bomb image
+	Icon pic =new ImageIcon("C:/Documents and Settings/admin/Red-Devil/Sweep/bomb.jpg");
+        
 	JPanel tablePanel = new JPanel();
 	JPanel blank = new JPanel();
 	JButton[][] block = new JButton[9][9];	
