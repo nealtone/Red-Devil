@@ -1,4 +1,4 @@
-package MineSweeperFull;
+
 
 import java.awt.*;
 import java.awt.event.*;
