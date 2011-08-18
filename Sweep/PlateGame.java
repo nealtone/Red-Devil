@@ -16,13 +16,12 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 	private int[][] visible ;
 	int checkIsAllCorrect=0,checkIsOpened=0,startTimer=0;
 	int i,j,k;
-        
+        /////////5555555555
         //Ver2//////////////////////
         JPanel startTab = new JPanel( new GridLayout(1,3));
         JLabel time  = new JLabel("    time :  00:00");
         JLabel stat = new JLabel("...");
-        
-        
+        JButton reset = new JButton("New Game");
         
         //////////////////////////////
 	//set path bomb image
@@ -31,7 +30,8 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 	JPanel tablePanel = new JPanel();
 	JPanel blank = new JPanel();
 	JButton[][] block = new JButton[9][9];
-        private int Icon;
+        int[][] blockMark = new int[9][9];
+        //private int Icon;
 	PlateGame(){
 		super("GameMineSweeper");
 		setBounds(200,200,400,480);
@@ -60,7 +60,9 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                 
                 //ver2
                 startTab.add(time);
-               // add(startTab,"North");
+                startTab.add(reset);
+                reset.addActionListener(this);
+                add(startTab,"North");
                 ////////
 		add(tablePanel,"Center");
                 
@@ -90,11 +92,14 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 					if(table[i][j]==0&&visible[i][j]==1)
 					zeroAction();
 					checkEnd();
-			}
-		}
-	}
-                
-                  }
+                                    }
+                                }
+                             }
+                 if(e.getSource()==reset)
+                     {
+                    restart(0);
+                      }
+         }
 	public void zeroAction()
 	{
 		int u=0;
@@ -190,10 +195,10 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                         }
                        //winGame
                         JOptionPane.showMessageDialog(tablePanel,"   Finish!!  --   Your time: 0"+j+":0"+k); 
-                       /* if(k<=9)
+                       if(k<=9)
     			stat.setText("   Finish!!  --   Your time: 0"+j+":0"+k);
     		else
-    			stat.setText("   Finish!!  --   Your time: 0"+j+":"+k);*/
+    			stat.setText("   Finish!!  --   Your time: 0"+j+":"+k);
                         }
                      }
                      restart(1);
@@ -201,8 +206,6 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 	}
 	
 	public void restart(int end){
-		
-		
 		for(int m=0;m<9;m++){
 			for(int n=0;n<9;n++){
 					visible[m][n]=1;
@@ -239,9 +242,6 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                         //lose
                         for(int i=0;i<9;i++){
                         for(int j=0;j<9;j++){
-						
-						
-                                
                             }
                                                  }
                          JOptionPane.showMessageDialog(tablePanel,"   You lose!!  --   55555");
@@ -258,11 +258,12 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 				tablePanel.remove(block[i][j]);
 				block[i][j]  = new JButton("");
 				tablePanel.add(block[i][j]);
-				block[i][j].addActionListener(this);	
+				block[i][j].addActionListener(this);
+                                block[i][j].addMouseListener(this);
+                                reset.addActionListener(this);
 			}
 		}
 			repaint();
-			
 		j=0;
 		k=0;	
 		checkIsOpened=0;	
@@ -316,9 +317,26 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 		for(int j=0;j<9;j++){
 			if(e.getSource()== block[i][j]&&e.getButton()==MouseEvent.BUTTON3)
                             {
-					block[i][j].setIcon(pic2);
-					block[i][j].setEnabled(true);
-                                                
+                                if(blockMark[i][j] == 0)
+                                    {
+                                         if(checkIsOpened == 0){
+                                         block[i][j].setIcon(pic2);
+					 block[i][j].setEnabled(true);
+                                         blockMark[i][j] = 1;
+                                    }
+                                else
+                                    {
+                                    }
+                                }else
+                                {
+                                    if(checkIsOpened == 0){
+                                    block[i][j].setIcon(null);
+                                    blockMark[i][j] = 0;
+                                    }
+                                    else
+                                    {
+                                   }
+                                }           
                             }
                         if(e.getSource()== block[i][j]&&e.getButton()==MouseEvent.BUTTON1)
                         {block[i][j].setIcon(null);}
