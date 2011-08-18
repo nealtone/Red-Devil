@@ -29,6 +29,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
         Icon pic2 = new ImageIcon("D:/tae/Red-Devil/Sweep/flag.jpg");
 	JPanel tablePanel = new JPanel();
 	JPanel blank = new JPanel();
+        JButton High = new JButton("High Score");
 	JButton[][] block = new JButton[9][9];
         int[][] blockMark = new int[9][9];
         int[][] MarkOpen = new int[9][9];
@@ -63,9 +64,10 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                 //ver2
                 startTab.add(time);
                 startTab.add(reset);
+                startTab.add(High);
                 reset.addActionListener(this);
+                High.addActionListener(this);
                 add(startTab,"North");
-                ////////
 		add(tablePanel,"Center");
                 
                 
@@ -218,7 +220,6 @@ public void checkEnd(){
                      restart(1);
                 }
 	}
-	
 	public void restart(int end){
 		for(int m=0;m<9;m++){
 			for(int n=0;n<9;n++){
@@ -266,6 +267,9 @@ public void checkEnd(){
 	
 	public void newGame(){
 		//add all Button 
+            if(checkIsOpened!=0){
+                
+            
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
 				visible[i][j]=0;
@@ -281,6 +285,7 @@ public void checkEnd(){
                                 MarkLeftClick[i][j] = 0;
 			}
 		}
+                }
 			repaint();
 		j=0;
 		k=0;	
