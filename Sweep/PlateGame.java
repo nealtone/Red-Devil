@@ -32,6 +32,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 	JButton[][] block = new JButton[9][9];
         int[][] blockMark = new int[9][9];
         int[][] MarkOpen = new int[9][9];
+        int[][] MarkLeftClick = new int[9][9];
         //private int Icon;
 	PlateGame(){
 		super("GameMineSweeper");
@@ -74,6 +75,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
             
 		for(int i=0;i<9;i++){
 		for(int j=0;j<9;j++){
+                    if(MarkLeftClick[i][j] == 0){
 			if(e.getSource()== block[i][j])
 			{
                             MarkOpen[i][j] = 1;
@@ -95,13 +97,15 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 					zeroAction();
 					checkEnd();
                                     }
-                                }
+                                }else{              }
                              }
-                 if(e.getSource()==reset)
+                 
+         }
+                if(e.getSource()==reset)
                      {
                     restart(0);
                       }
-         }
+        }
 public void zeroAction()
 	{
 		int u=0;
@@ -274,6 +278,7 @@ public void checkEnd(){
                                 block[i][j].addMouseListener(this);
                                 MarkOpen[i][j] =0;
                                 blockMark[i][j] = 0;
+                                MarkLeftClick[i][j] = 0;
 			}
 		}
 			repaint();
@@ -337,6 +342,7 @@ public void checkEnd(){
 					 block[i][j].setEnabled(true);
                                          blockMark[i][j] = 1;
                                          MarkOpen[i][j] = 1;
+                                         MarkLeftClick[i][j] = 1;
                                         }else
                                         { 
                                             
@@ -344,18 +350,17 @@ public void checkEnd(){
                                     
                                 }else
                                 {
-                                    if(checkIsOpened == 0&&MarkOpen[i][j] == 1){
+                                    if(MarkOpen[i][j] == 1){
                                     block[i][j].setIcon(null);
                                     blockMark[i][j] = 0;
                                     MarkOpen[i][j] = 0;
+                                    MarkLeftClick[i][j] = 0;
                                     }
                                     else
                                     {
                                    }
                                 }           
                             }
-                        if(e.getSource()== block[i][j]&&e.getButton()==MouseEvent.BUTTON1)
-                        {block[i][j].setIcon(null);}
 		}
 	}
     }
