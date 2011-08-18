@@ -31,6 +31,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 	JPanel blank = new JPanel();
 	JButton[][] block = new JButton[9][9];
         int[][] blockMark = new int[9][9];
+        int[][] MarkOpen = new int[9][9];
         //private int Icon;
 	PlateGame(){
 		super("GameMineSweeper");
@@ -75,6 +76,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 		for(int j=0;j<9;j++){
 			if(e.getSource()== block[i][j])
 			{
+                            MarkOpen[i][j] = 1;
                          if(startTimer==0)
                              new Thread(this).start();
 					startTimer=1;
@@ -100,7 +102,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                     restart(0);
                       }
          }
-	public void zeroAction()
+public void zeroAction()
 	{
 		int u=0;
 		int i=0,j=0;
@@ -114,6 +116,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 						if(table[i-1][j-1]!=0)
 						block[i-1][j-1].setText(Integer.toString(table[i-1][j-1]));
                                                 block[i-1][j-1].setIcon(null);
+                                                MarkOpen[i-1][j-1] = 1;
 					}
 					if((i-1)>=0){
 						visible[i-1][j]=1;
@@ -121,6 +124,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 						if(table[i-1][j]!=0)
 							block[i-1][j].setText(Integer.toString(table[i-1][j]));
                                                 block[i-1][j].setIcon(null);
+                                                MarkOpen[i-1][j] = 1;
 					}
 					if((i-1)>=0&&(j+1)< numOfTable){
 						visible[i-1][j+1]=1;
@@ -128,6 +132,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 						if(table[i-1][j+1]!=0)
 							block[i-1][j+1].setText(Integer.toString(table[i-1][j+1]));
                                                 block[i-1][j+1].setIcon(null);
+                                                MarkOpen[i-1][j+1] = 1;
                                                 
 					}
 					if((j-1)>=0){
@@ -136,6 +141,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 						if(table[i][j-1]!=0)
 							block[i][j-1].setText(Integer.toString(table[i][j-1]));
                                                 block[i][j-1].setIcon(null);
+                                                MarkOpen[i][j-1] = 1;
 					}
 					
 					if((j+1)< numOfTable){
@@ -144,6 +150,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 						if(table[i][j+1]!=0)
 							block[i][j+1].setText(Integer.toString(table[i][j+1]));
                                                 block[i][j+1].setIcon(null);
+                                                MarkOpen[i][j+1] = 1;
 					}
 					if((i+1)< numOfTable&&(j-1)>=0){
 						visible[i+1][j-1]=1;
@@ -151,6 +158,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 						if(table[i+1][j-1]!=0)
 							block[i+1][j-1].setText(Integer.toString(table[i+1][j-1]));
                                                 block[i+1][j-1].setIcon(null);
+                                                MarkOpen[i+1][j-1] = 1;
 					}
 						
 					if((i+1)< numOfTable){
@@ -159,6 +167,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 						if(table[i+1][j]!=0)
 							block[i+1][j].setText(Integer.toString(table[i+1][j]));
                                                 block[i+1][j].setIcon(null);
+                                                MarkOpen[i+1][j] = 1;
 					}
 						
 					if((i+1)< numOfTable&&(j+1)< numOfTable){
@@ -167,6 +176,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 						if(table[i+1][j+1]!=0)
 							block[i+1][j+1].setText(Integer.toString(table[i+1][j+1]));
                                                 block[i+1][j+1].setIcon(null);
+                                                MarkOpen[i+1][j+1] = 1;
 					}					
 				}
 			}
@@ -175,7 +185,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 		}
 	}
 	
-	public void checkEnd(){
+public void checkEnd(){
 		
 		checkIsAllCorrect=0;
 		
@@ -242,6 +252,8 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                         //lose
                         for(int i=0;i<9;i++){
                         for(int j=0;j<9;j++){
+                            MarkOpen[i][j] =1;
+                                blockMark[i][j] = 1;
                             }
                                                  }
                          JOptionPane.showMessageDialog(tablePanel,"   You lose!!  --   55555");
@@ -260,7 +272,8 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 				tablePanel.add(block[i][j]);
 				block[i][j].addActionListener(this);
                                 block[i][j].addMouseListener(this);
-                                reset.addActionListener(this);
+                                MarkOpen[i][j] =0;
+                                blockMark[i][j] = 0;
 			}
 		}
 			repaint();
@@ -319,19 +332,22 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                             {
                                 if(blockMark[i][j] == 0)
                                     {
-                                         if(checkIsOpened == 0){
+                                        if(MarkOpen[i][j] == 0&&blockMark[i][j]!=1){
                                          block[i][j].setIcon(pic2);
 					 block[i][j].setEnabled(true);
                                          blockMark[i][j] = 1;
-                                    }
-                                else
-                                    {
-                                    }
+                                         MarkOpen[i][j] = 1;
+                                        }else
+                                        { 
+                                            
+                                        }
+                                    
                                 }else
                                 {
-                                    if(checkIsOpened == 0){
+                                    if(checkIsOpened == 0&&MarkOpen[i][j] == 1){
                                     block[i][j].setIcon(null);
                                     blockMark[i][j] = 0;
+                                    MarkOpen[i][j] = 0;
                                     }
                                     else
                                     {
