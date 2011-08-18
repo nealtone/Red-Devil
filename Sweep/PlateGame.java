@@ -2,48 +2,53 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.text.BreakIterator;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.Icon;
 
 class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
-        public static final  int NUMOFTABLE = 9;
-        public static final  int NUMOFBOMB = 10;
-	private int  numOfBomb;
-	private int  numOfTable;
+        public static final  int numOfTable = 9;
+        public static final  int numOfBomb = 3;
 	private int[][] table; 
 	private int[][] visible ;
 	int checkIsAllCorrect=0,checkIsOpened=0,startTimer=0;
-	int m,s,cm,cs;
-        /////////5555555555
+	int h,m,s,ns,setPoint;
         //Ver2//////////////////////
         JPanel startTab = new JPanel( new GridLayout(1,3));
         JLabel time  = new JLabel("    time :  00:00");
         JLabel stat = new JLabel("...");
         JButton reset = new JButton("New Game");
-        
+       
         //////////////////////////////
 	//set path bomb image
-	Icon pic =new ImageIcon("D:/tae/Red-Devil/Sweep/bomb.jpg");
-        Icon pic2 = new ImageIcon("D:/tae/Red-Devil/Sweep/flag.jpg");
+	Icon pic =new ImageIcon("C:/Users/kuy/Desktop/Sweep/bomb.jpg");
+        Icon pic2 = new ImageIcon("C:/Users/kuy/Desktop/Sweep/red_flag.jpeg");
 	JPanel tablePanel = new JPanel();
+        JPanel tableScore = new JPanel();
+        JLabel Score = new JLabel();
 	JPanel blank = new JPanel();
         JButton High = new JButton("High Score");
 	JButton[][] block = new JButton[9][9];
         int[][] blockMark = new int[9][9];
         int[][] MarkOpen = new int[9][9];
         int[][] MarkLeftClick = new int[9][9];
-        //private int Icon;
+    private int i=0;
+    int min=9999,max=0;
+    private double d;
+    private String str,str2 = "";
 	PlateGame(){
 		super("GameMineSweeper");
 		setBounds(200,200,400,480);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
-		
-		numOfBomb = NUMOFBOMB;
-		 numOfTable = NUMOFTABLE;
-		
+                
 		tablePanel.setLayout(new GridLayout(9,9,0,0));
 		//add all Button 
 		for(int i=0;i<9;i++){
@@ -59,7 +64,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 		RandomizeTable ran = new RandomizeTable( numOfBomb, numOfTable);
 		ran.takeNumber();
 		table = ran.getTableArray();
-                
+                //ver3
                 
                 //ver2
                 startTab.add(time);
@@ -74,7 +79,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 	}
 	
 	public void actionPerformed(ActionEvent e){
-            
+            //Even left click
 		for(int i=0;i<9;i++){
 		for(int j=0;j<9;j++){
                     if(MarkLeftClick[i][j] == 0){
@@ -99,15 +104,102 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 					zeroAction();
 					checkEnd();
                                     }
-                                }else{              }
-                             }
-                 
-         }
-                if(e.getSource()==reset)
-                     {
-                    restart(0);
-                      }
+                                }else{              } }}
+            //Even Button new game
+            if(e.getSource()==reset)  { restart(0); }
+            //Even Button high score
+    try{
+            if(e.getSource()==High){
+                       FileReader fin = null;
+              try {
+                   fin = new FileReader("GameScore.txt");
+                        } catch (FileNotFoundException ex) {  }
+                                int[] keep ;
+                                keep = new int[10];
+                                int p=0,buff=0;
+                                String plus="";
+                                //read File
+                                Scanner src = new Scanner(fin);
+                    while (src.hasNext()) {
+                        if (src.hasNextInt()) {
+                                 i = src.nextInt();
+                                 keep[p]=i;
+                                 p++;
+                         } else if (src.hasNextDouble()) {
+                                 d = src.nextDouble();
+                        } else if (src.hasNextBoolean()) {
+                                Boolean b = src.nextBoolean();
+                        } else {
+                                str = src.next();
+                            try {
+                                fin.close();
+                                     } catch (IOException ex) {
+                                    }
+                               }
+                        
+                }
+                   // min = keep[0];
+                    //Sort rank
+                    for(int i=0;i<p;i++){
+                         for(int j=1;j<(p-i);j++){
+                            if(keep[j-1]>keep[j]){
+                            buff=keep[j-1];
+                            keep[j-1]=keep[j];
+                            keep[j]=buff;
+                            }
+                         }
+                    }
+                    for(int i=0;i<5;i++){
+                        plus+=" Rank "+(i+1)+" "+ChangeValueToTime(keep[i]);
+                        Score.setText(plus);
+                    }
+                JOptionPane.showMessageDialog(tableScore,Score);
         }
+        }catch(Exception a){
+            JOptionPane.showMessageDialog(tableScore,"No Rank");
+        }
+        }
+        //Maximum 7 munit
+  public String ChangeValueToTime(int a){
+            String time="";
+            for(int i=0;i<=a;i++)
+            {
+                if(a<60)
+                {
+                    time = "0:"+i;
+                }else if(a>=60&&a<70){
+                    time = "1:0"+(i-60);
+                }else if(a>=70&&a<120){
+                    time = "1:"+(i-60);
+                }else if(a>=120&&a<130){
+                    time = "2:0"+(i-120);
+                }else if(a>=130&&a<180){
+                    time = "2:"+(i-120);
+                }else if(a>=180&&a<190){
+                    time = "3:0"+(i-180);
+                }else if(a>=190&&a<240){
+                    time = "3:"+(i-180);
+                }else if(a>=240&&a<250){
+                    time = "4:0"+(i-240);
+                }else if(a>=250&&a<300){
+                    time = "4:"+(i-240);
+                }else if(a>=300&&a<310){
+                    time = "5:0"+(i-300);
+                }else if(a>=310&&a<360){
+                    time = "5:"+(i-300);
+                }else if(a>=360&&a<370){
+                    time = "6:0"+(i-360);
+                }else if(a>=370&&a<420){
+                    time = "6:"+(i-360);
+                }else if(a>=420&&a<430){
+                    time = "7:0"+(i-420);
+                }else if(a>=430&&a<480){
+                    time = "7:"+(i-420);
+                }
+            }
+            return time.toString();
+        }
+  
 public void zeroAction()
 	{
 		int u=0;
@@ -191,10 +283,15 @@ public void zeroAction()
 		}
 	}
 	
-public void checkEnd(){
+public void checkEnd() {
 		
 		checkIsAllCorrect=0;
-		
+                FileWriter write = null;
+            try {
+                write = new FileWriter("GameScore.txt",true);
+            } catch (IOException ex) {
+                Logger.getLogger(PlateGame.class.getName()).log(Level.SEVERE, null, ex);
+            }
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
 				if(visible[i][j]==1&&table[i][j]!=8)
@@ -207,19 +304,20 @@ public void checkEnd(){
                      for(int i=0;i<9;i++){
 		for(int j=0;j<9;j++){
 			if(table[i][j]==999){
-						block[i][j].setIcon(pic);
-                        }
-                       //winGame
-                        
-                       
+			block[i][j].setIcon(pic);
+                            }
                         }
                      }
-                     cm=m;
-                     cs=s;
-                     JOptionPane.showMessageDialog(tablePanel,"   Finish!!  --   Your time: "+cm+":"+cs);
+                     //winGame
+                     JOptionPane.showMessageDialog(tablePanel,"   Finish!!  --   Your time: "+m+":"+s+ns);
+            try {
+                write.write(setPoint+" "+m+":"+s+ns+"\t\n");
+                write.close();
+            } catch (IOException ex) {
+                
+            }
                      
                      restart(1);
-                     
                 }
 	}
 
@@ -297,8 +395,10 @@ public void checkEnd(){
             }
             repaint();
 		m=0;
-		s=0;	
-		checkIsOpened=0;	
+		s=0;
+                ns=0;
+                setPoint=0;
+		checkIsOpened=0;
                 time.setText("    time :  00:00");
                 
 		RandomizeTable ran = new RandomizeTable( numOfBomb, numOfTable);
@@ -324,13 +424,16 @@ public void checkEnd(){
 		
 		while(startTimer!=0)
 		{
-			if(s==60){
-   				s=0;m++;
+			if(ns==9){
+   				ns=0;s++;
+                                if(s==6){
+                                    m++;
+                                    s=0;}
    			}
-	   		if(s<=9)
-    			time.setText("    time :  "+m+":0"+s);	
-    		else
-    			time.setText("    time :  "+m+":"+s);
+	   		if(s<=6)
+                            time.setText("    time :  "+m+":"+s+ns);	
+                        else
+                            time.setText("    time :  "+m+":"+s+ns);
     			
 			try{
 				Thread.sleep(1000);
@@ -339,7 +442,7 @@ public void checkEnd(){
 			
 			GregorianCalendar timer = new GregorianCalendar();
 		
-   			s++;
+   			ns++;setPoint++;
                         
 		}
 	}
