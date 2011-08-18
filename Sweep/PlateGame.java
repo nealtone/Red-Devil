@@ -2,25 +2,36 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.BreakIterator;
+import java.util.GregorianCalendar;
 import javax.swing.*;
+import javax.swing.Icon;
 
-class PlateGame extends JFrame implements ActionListener{
-    public static final  int NUMOFTABLE = 9;
-    public static final  int NUMOFBOMB = 10;
+class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
+        public static final  int NUMOFTABLE = 9;
+        public static final  int NUMOFBOMB = 10;
 	private int  numOfBomb=9;
 	private int  numOfTable=10;
 	private int[][] table; 
 	private int[][] visible ;
-	int checkIsAllCorrect=0,checkIsOpened=0;
+	int checkIsAllCorrect=0,checkIsOpened=0,startTimer=0;
 	int i,j,k;
         
-	//set path bomb image
-	Icon pic =new ImageIcon("C:/Documents and Settings/admin/Red-Devil/Sweep/bomb.jpg");
+        //Ver2//////////////////////
+        JPanel startTab = new JPanel( new GridLayout(1,3));
+        JLabel time  = new JLabel("    time :  00:00");
+        JLabel stat = new JLabel("...");
         
+        
+        
+        //////////////////////////////
+	//set path bomb image
+	Icon pic =new ImageIcon("D:/tae/Red-Devil/Sweep/bomb.jpg");
+        Icon pic2 = new ImageIcon("D:/tae/Red-Devil/Sweep/flag.jpg");
 	JPanel tablePanel = new JPanel();
 	JPanel blank = new JPanel();
-	JButton[][] block = new JButton[9][9];	
-	
+	JButton[][] block = new JButton[9][9];
+        private int Icon;
 	PlateGame(){
 		super("GameMineSweeper");
 		setBounds(200,200,400,480);
@@ -39,19 +50,32 @@ class PlateGame extends JFrame implements ActionListener{
 			block[i][j] = new JButton("");
 			tablePanel.add(block[i][j]);
 			block[i][j].addActionListener(this);
+                        block[i][j].addMouseListener(this);
 		}
 		}
 		RandomizeTable ran = new RandomizeTable( numOfBomb, numOfTable);
 		ran.takeNumber();
 		table = ran.getTableArray();
+                
+                
+                //ver2
+                startTab.add(time);
+               // add(startTab,"North");
+                ////////
 		add(tablePanel,"Center");
+                
+                
 	}
 	
 	public void actionPerformed(ActionEvent e){
+            
 		for(int i=0;i<9;i++){
 		for(int j=0;j<9;j++){
 			if(e.getSource()== block[i][j])
 			{
+                         if(startTimer==0)
+                             new Thread(this).start();
+					startTimer=1;
 			block[i][j].setEnabled(false);
 			visible[i][j]=1;
 			if(table[i][j]>0&&table[i][j]<=8)
@@ -60,7 +84,7 @@ class PlateGame extends JFrame implements ActionListener{
 						block[i][j].setIcon(pic);
 						block[i][j].setDisabledIcon(pic);
 						block[i][j].setEnabled(true);
-						block[i][j].setBackground(Color.orange);
+						block[i][j].setBackground(Color.RED);
 						restart(2);
 					}	
 					if(table[i][j]==0&&visible[i][j]==1)
@@ -69,7 +93,8 @@ class PlateGame extends JFrame implements ActionListener{
 			}
 		}
 	}
-   }
+                
+                  }
 	public void zeroAction()
 	{
 		int u=0;
@@ -82,25 +107,30 @@ class PlateGame extends JFrame implements ActionListener{
 						visible[i-1][j-1]=1;
 						block[i-1][j-1].setEnabled(false);
 						if(table[i-1][j-1]!=0)
-							block[i-1][j-1].setText(Integer.toString(table[i-1][j-1]));					
+						block[i-1][j-1].setText(Integer.toString(table[i-1][j-1]));
+                                                block[i-1][j-1].setIcon(null);
 					}
 					if((i-1)>=0){
 						visible[i-1][j]=1;
 						block[i-1][j].setEnabled(false);
 						if(table[i-1][j]!=0)
 							block[i-1][j].setText(Integer.toString(table[i-1][j]));
+                                                block[i-1][j].setIcon(null);
 					}
 					if((i-1)>=0&&(j+1)< numOfTable){
 						visible[i-1][j+1]=1;
 						block[i-1][j+1].setEnabled(false);
 						if(table[i-1][j+1]!=0)
 							block[i-1][j+1].setText(Integer.toString(table[i-1][j+1]));
+                                                block[i-1][j+1].setIcon(null);
+                                                
 					}
 					if((j-1)>=0){
 						visible[i][j-1]=1;
 						block[i][j-1].setEnabled(false);
 						if(table[i][j-1]!=0)
 							block[i][j-1].setText(Integer.toString(table[i][j-1]));
+                                                block[i][j-1].setIcon(null);
 					}
 					
 					if((j+1)< numOfTable){
@@ -108,12 +138,14 @@ class PlateGame extends JFrame implements ActionListener{
 						block[i][j+1].setEnabled(false);
 						if(table[i][j+1]!=0)
 							block[i][j+1].setText(Integer.toString(table[i][j+1]));
+                                                block[i][j+1].setIcon(null);
 					}
 					if((i+1)< numOfTable&&(j-1)>=0){
 						visible[i+1][j-1]=1;
 						block[i+1][j-1].setEnabled(false);
 						if(table[i+1][j-1]!=0)
 							block[i+1][j-1].setText(Integer.toString(table[i+1][j-1]));
+                                                block[i+1][j-1].setIcon(null);
 					}
 						
 					if((i+1)< numOfTable){
@@ -121,13 +153,15 @@ class PlateGame extends JFrame implements ActionListener{
 						block[i+1][j].setEnabled(false);
 						if(table[i+1][j]!=0)
 							block[i+1][j].setText(Integer.toString(table[i+1][j]));
+                                                block[i+1][j].setIcon(null);
 					}
 						
 					if((i+1)< numOfTable&&(j+1)< numOfTable){
 						visible[i+1][j+1]=1;
 						block[i+1][j+1].setEnabled(false);
 						if(table[i+1][j+1]!=0)
-							block[i+1][j+1].setText(Integer.toString(table[i+1][j+1]));	
+							block[i+1][j+1].setText(Integer.toString(table[i+1][j+1]));
+                                                block[i+1][j+1].setIcon(null);
 					}					
 				}
 			}
@@ -149,8 +183,21 @@ class PlateGame extends JFrame implements ActionListener{
 		checkIsOpened=checkIsAllCorrect;
 		
 		if(checkIsAllCorrect==(( numOfTable* numOfTable)- numOfBomb)){
-			restart(1);
-		}
+                     for(int i=0;i<9;i++){
+		for(int j=0;j<9;j++){
+			if(table[i][j]==999){
+						block[i][j].setIcon(pic);
+                        }
+                       //winGame
+                        JOptionPane.showMessageDialog(tablePanel,"   Finish!!  --   Your time: 0"+j+":0"+k); 
+                       /* if(k<=9)
+    			stat.setText("   Finish!!  --   Your time: 0"+j+":0"+k);
+    		else
+    			stat.setText("   Finish!!  --   Your time: 0"+j+":"+k);*/
+                        }
+                     }
+                     restart(1);
+                }
 	}
 	
 	public void restart(int end){
@@ -185,9 +232,19 @@ class PlateGame extends JFrame implements ActionListener{
 					else{
 						block[i][j].setIcon(pic);
 						block[i][j].setDisabledIcon(pic);
+                    
 					}
 				}	
 			}
+                        //lose
+                        for(int i=0;i<9;i++){
+                        for(int j=0;j<9;j++){
+						
+						
+                                
+                            }
+                                                 }
+                         JOptionPane.showMessageDialog(tablePanel,"   You lose!!  --   55555");
 		}
 	}
 	
@@ -209,6 +266,7 @@ class PlateGame extends JFrame implements ActionListener{
 		j=0;
 		k=0;	
 		checkIsOpened=0;	
+                time.setText("    time :  00:00");
                 
 		RandomizeTable ran = new RandomizeTable( numOfBomb, numOfTable);
 		ran.takeNumber();
@@ -229,4 +287,58 @@ class PlateGame extends JFrame implements ActionListener{
 		}
 		
 	}
+        public void run(){
+		
+		while(startTimer!=0)
+		{
+			if(k==60){
+   				k=0;j++;
+   			}
+	   		if(k<=9)
+    			time.setText("    time :  0"+j+":0"+k);	
+    		else
+    			time.setText("    time :  0"+j+":"+k);
+    			
+			try{
+				Thread.sleep(1000);
+			}
+			catch(Exception e){}
+			
+			GregorianCalendar timer = new GregorianCalendar();
+		
+   			k++;
+		}
+	}
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        for(int i=0;i<9;i++){
+		for(int j=0;j<9;j++){
+			if(e.getSource()== block[i][j]&&e.getButton()==MouseEvent.BUTTON3)
+                            {
+					block[i][j].setIcon(pic2);
+					block[i][j].setEnabled(true);
+                                                
+                            }
+                        if(e.getSource()== block[i][j]&&e.getButton()==MouseEvent.BUTTON1)
+                        {block[i][j].setIcon(null);}
+		}
+	}
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 }
