@@ -10,12 +10,12 @@ import javax.swing.Icon;
 class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
         public static final  int NUMOFTABLE = 9;
         public static final  int NUMOFBOMB = 10;
-	private int  numOfBomb=9;
-	private int  numOfTable=10;
+	private int  numOfBomb;
+	private int  numOfTable;
 	private int[][] table; 
 	private int[][] visible ;
 	int checkIsAllCorrect=0,checkIsOpened=0,startTimer=0;
-	int i,j,k;
+	int m,s,cm,cs;
         /////////5555555555
         //Ver2//////////////////////
         JPanel startTab = new JPanel( new GridLayout(1,3));
@@ -210,16 +210,19 @@ public void checkEnd(){
 						block[i][j].setIcon(pic);
                         }
                        //winGame
-                        JOptionPane.showMessageDialog(tablePanel,"   Finish!!  --   Your time: 0"+j+":0"+k); 
-                       if(k<=9)
-    			stat.setText("   Finish!!  --   Your time: 0"+j+":0"+k);
-    		else
-    			stat.setText("   Finish!!  --   Your time: 0"+j+":"+k);
+                        
+                       
                         }
                      }
+                     cm=m;
+                     cs=s;
+                     JOptionPane.showMessageDialog(tablePanel,"   Finish!!  --   Your time: "+cm+":"+cs);
+                     
                      restart(1);
+                     
                 }
 	}
+
 	public void restart(int end){
 		for(int m=0;m<9;m++){
 			for(int n=0;n<9;n++){
@@ -268,13 +271,12 @@ public void checkEnd(){
 	public void newGame(){
 		//add all Button 
             if(checkIsOpened!=0){
-                
-            
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
 				visible[i][j]=0;
 				block[i][j].setEnabled(true);
 				block[i][j].setText("");
+                                
 				tablePanel.remove(block[i][j]);
 				block[i][j]  = new JButton("");
 				tablePanel.add(block[i][j]);
@@ -285,10 +287,17 @@ public void checkEnd(){
                                 MarkLeftClick[i][j] = 0;
 			}
 		}
-                }
-			repaint();
-		j=0;
-		k=0;	
+                
+                }else{
+                for(int i=0;i<9;i++){
+			for(int j=0;j<9;j++){
+				     block[i][j].setIcon(null);
+			}
+		}
+            }
+            repaint();
+		m=0;
+		s=0;	
 		checkIsOpened=0;	
                 time.setText("    time :  00:00");
                 
@@ -315,13 +324,13 @@ public void checkEnd(){
 		
 		while(startTimer!=0)
 		{
-			if(k==60){
-   				k=0;j++;
+			if(s==60){
+   				s=0;m++;
    			}
-	   		if(k<=9)
-    			time.setText("    time :  0"+j+":0"+k);	
+	   		if(s<=9)
+    			time.setText("    time :  "+m+":0"+s);	
     		else
-    			time.setText("    time :  0"+j+":"+k);
+    			time.setText("    time :  "+m+":"+s);
     			
 			try{
 				Thread.sleep(1000);
@@ -330,7 +339,8 @@ public void checkEnd(){
 			
 			GregorianCalendar timer = new GregorianCalendar();
 		
-   			k++;
+   			s++;
+                        
 		}
 	}
 
