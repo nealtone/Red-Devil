@@ -23,6 +23,9 @@ public class GetBomb extends JFrame implements ActionListener,MouseListener{
     static int bomb;
         JPanel Start1 = new JPanel();
         JTextField getbomb = new JTextField("Please input 2-80 Bomb!!");
+        
+        //For test
+         //JTextField getbomb = new JTextField("9");
         JButton ok = new JButton("OK");
         
     public GetBomb() {
@@ -54,7 +57,7 @@ public void reset(){
       {
  try{
           setVisible(false);
-          bomb =Integer.parseInt(getbomb.getText());
+          choose();
            PlateGame game = new PlateGame(bomb);
           game.setVisible(true);
                 }
@@ -65,7 +68,10 @@ public void reset(){
          
       }
     }
-
+public int choose(){
+    bomb =Integer.parseInt(getbomb.getText());
+    return bomb;
+}
     @Override
     public void mouseClicked(MouseEvent e) {
         getbomb.selectAll();

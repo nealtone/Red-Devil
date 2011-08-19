@@ -3,12 +3,14 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Icon;
 
@@ -17,7 +19,8 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
         
         
        GetBomb test = new GetBomb();
-       
+       Image bg = Toolkit.getDefaultToolkit().createImage("D:/tae/Red-Devil/Sweep/BG-Top.jpg");
+       //Image bg = ImageIO.read(new File("D:/tae/Red-Devil/Sweep/BG-Top.jpg"));
         final int numOfTable = 9;
         int numOfBomb;
        
@@ -56,7 +59,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 		setBounds(200,200,500,500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
-                  System.out.println(numOfBomb);
+                System.out.println(numOfBomb);
 		tablePanel.setLayout(new GridLayout(9,9,0,0));
 		//add all Button 
 		for(int i=0;i<9;i++){
@@ -73,7 +76,6 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
 		ran.takeNumber();
 		table = ran.getTableArray();
                 //ver3
-                
                 //ver2
                 startTab.add(time);
                 startTab.add(reset);
@@ -84,6 +86,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                 SetNewBomb.addActionListener(this);
                 add(startTab,"North");
 		add(tablePanel,"Center");
+                
                 
 	}
 	
