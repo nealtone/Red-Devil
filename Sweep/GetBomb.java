@@ -1,10 +1,12 @@
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -25,7 +27,8 @@ public class GetBomb extends JFrame implements ActionListener,MouseListener{
         
     public GetBomb() {
         super("Set Bomb");
-		setBounds(200,200,220,70);
+		setBounds(500,500,220,70);
+                setBackground(Color.red);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
         Start1.add(getbomb);
@@ -39,18 +42,27 @@ public class GetBomb extends JFrame implements ActionListener,MouseListener{
         
    
 public void reset(){
+   
     new GetBomb();
+    
 }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
       if(e.getSource()==ok)
       {
+ try{
           setVisible(false);
           bomb =Integer.parseInt(getbomb.getText());
-          PlateGame game = new PlateGame(bomb);
+           PlateGame game = new PlateGame(bomb);
           game.setVisible(true);
-                
+                }
+    catch(Exception a){
+        JOptionPane.showMessageDialog(Start1,"  Please input only number");
+        setVisible(true);
+    }
+         
       }
     }
 
