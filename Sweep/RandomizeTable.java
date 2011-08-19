@@ -6,10 +6,6 @@
 
 import java.util.Random;
 
-/**
- *
- * @author NEAL
- */
 public class RandomizeTable {
 
     /**
@@ -60,8 +56,7 @@ public class RandomizeTable {
 
     }
     public void check(int[] randx,int[] randy){
-        for(int i=0;i< numOfTable;i=i+1)		{	
-  			
+        for(int i=0;i< numOfTable;i=i+1){	
   			for(int j=0;j< numOfTable;j++)	{
   				if(table[i][j]!= 999){
   				   for(int k=0;k< numOfBomb;k++){

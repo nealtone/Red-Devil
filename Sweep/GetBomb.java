@@ -15,10 +15,6 @@ import javax.swing.JTextField;
  * and open the template in the editor.
  */
 
-/**
- *
- * @author admin
- */
 public class GetBomb extends JFrame implements ActionListener,MouseListener{
     static int bomb;
         JPanel Start1 = new JPanel();

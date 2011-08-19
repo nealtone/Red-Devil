@@ -3,14 +3,12 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Icon;
 
@@ -86,8 +84,6 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                 SetNewBomb.addActionListener(this);
                 add(startTab,"North");
 		add(tablePanel,"Center");
-                
-                
 	}
 	
 	public void actionPerformed(ActionEvent e){
