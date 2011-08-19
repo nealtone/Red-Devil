@@ -36,8 +36,7 @@ public class RandomizeTable {
 			while(check==1){
 				randx1 = rn.nextInt(numOfTable-1);
 				randy1 = rn.nextInt(numOfTable-1);
-			//	randx1 = randx1%10;
-			//	randy1 = randy1%10;
+                                
 				check = 0;
 			
 				//check number hat over <numOfBomb>
@@ -47,20 +46,54 @@ public class RandomizeTable {
 					else if((randx1==randx[a])&&(randy1==randy[a]))
 						{check = 1;break;}
 					else check = 0;
-					
 				}
 			}
-			
-			
 			randx[i] = randx1;
+                        
 			randy[i] = randy1;
+                         
 		}
 		for(int i =0;i< numOfBomb;i++){
 			table[randx[i]][randy[i]]= 999 ;	
 		}
-		
-  		for(int i=0;i< numOfTable;i=i+1)		{	
-  			int g=0;
+               check(randx,randy);
+//  		for(int i=0;i< numOfTable;i=i+1)		{	
+//  			int g=0;
+//  			for(int j=0;j< numOfTable;j++)	{
+//  				if(table[i][j]!= 999){
+//  				   for(int k=0;k< numOfBomb;k++){
+//  						if((i-1)==randx[k]&&(j-1)== randy[k])	{
+//  							table[i][j]++;
+//  						}
+//  						if((i-1==randx[k])&& j == randy[k]){
+//  							table[i][j]++;
+//  						}
+//  						if((i-1)==randx[k]&&(j+1)== randy[k]){
+//  							table[i][j]++;
+//  						}
+//  						if(  i ==randx[k]&&(j-1)== randy[k]){
+//  							table[i][j]++;
+//  						}
+//  						if( i ==randx[k]&&(j+1)== randy[k]){
+//  							table[i][j]++;
+//  						}	
+//  						if((i+1)==randx[k]&&(j-1)== randy[k]){
+//  							table[i][j]++;
+//  						}	
+//  						if((i+1)==randx[k]&& j == randy[k]){
+//  							table[i][j]++;
+//  						}	
+//  						if((i+1)==randx[k]&&(j+1)== randy[k]){
+//  							table[i][j]++;
+//  						}	
+//  					}	
+//  				}
+//			}
+//		}
+    }
+    public void check(int[] randx,int[] randy){
+        for(int i=0;i< numOfTable;i=i+1)		{	
+  			
   			for(int j=0;j< numOfTable;j++)	{
   				if(table[i][j]!= 999){
   				   for(int k=0;k< numOfBomb;k++){
@@ -90,10 +123,7 @@ public class RandomizeTable {
   						}	
   					}	
   				}
-  			//	System.out.printf("%3d ",table[i][j]);
 			}
-	  	//	System.out.println("");
-  		//	System.out.println("");
 		}
     }
     public int[][] getTableArray(){

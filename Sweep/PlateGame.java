@@ -1,5 +1,6 @@
 
 
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileNotFoundException;
@@ -14,8 +15,15 @@ import javax.swing.*;
 import javax.swing.Icon;
 
 class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
-        public static final  int numOfTable = 9;
-        public static final  int numOfBomb = 3;
+        //ver 3
+        
+        
+       GetBomb test = new GetBomb();
+       
+        final int numOfTable = 9;
+        int numOfBomb;
+       
+        
 	private int[][] table; 
 	private int[][] visible ;
 	int checkIsAllCorrect=0,checkIsOpened=0,startTimer=0;
@@ -28,8 +36,8 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
        
         //////////////////////////////
 	//set path bomb image
-	Icon pic =new ImageIcon("C:/Users/kuy/Desktop/Sweep/bomb.jpg");
-        Icon pic2 = new ImageIcon("C:/Users/kuy/Desktop/Sweep/red_flag.jpeg");
+	Icon pic =new ImageIcon("D:/tae/Red-Devil/Sweep/bomb.jpg");
+        Icon pic2 = new ImageIcon("D:/tae/Red-Devil/Sweep/red_flag.jpeg");
 	JPanel tablePanel = new JPanel();
         JPanel tableScore = new JPanel();
         JLabel Score = new JLabel();
@@ -39,16 +47,19 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
         int[][] blockMark = new int[9][9];
         int[][] MarkOpen = new int[9][9];
         int[][] MarkLeftClick = new int[9][9];
-    private int i=0;
-    int min=9999,max=0;
-    private double d;
-    private String str,str2 = "";
-	PlateGame(){
+        
+        private int i=0;
+        int min=9999,max=0;
+        private double d;
+        private String str,str2 = "";
+	PlateGame(int numOfBomb1 ){
+           
 		super("GameMineSweeper");
+                 numOfBomb = numOfBomb1;      
 		setBounds(200,200,400,480);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
-                
+                  System.out.println(numOfBomb);
 		tablePanel.setLayout(new GridLayout(9,9,0,0));
 		//add all Button 
 		for(int i=0;i<9;i++){
@@ -74,7 +85,6 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                 High.addActionListener(this);
                 add(startTab,"North");
 		add(tablePanel,"Center");
-                
                 
 	}
 	
@@ -115,9 +125,8 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                    fin = new FileReader("GameScore.txt");
                         } catch (FileNotFoundException ex) {  }
                                 int[] keep ;
-                                keep = new int[10];
+                                keep = new int[100];
                                 int p=0,buff=0;
-                                String plus="";
                                 //read File
                                 Scanner src = new Scanner(fin);
                     while (src.hasNext()) {
@@ -149,11 +158,11 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                             }
                          }
                     }
-                    for(int i=0;i<5;i++){
-                        plus+=" Rank "+(i+1)+" "+ChangeValueToTime(keep[i]);
-                        Score.setText(plus);
-                    }
-                JOptionPane.showMessageDialog(tableScore,Score);
+                JOptionPane.showMessageDialog(tableScore,"Best Times \n"+" Rank "+(1)+"      "+ChangeValueToTime(keep[0])+"\n"
+                        +"\t Rank "+(2)+"      "+ChangeValueToTime(keep[1])+"\n"
+                        +"\t Rank "+(3)+"      "+ChangeValueToTime(keep[2])+"\n"
+                        +"\t Rank "+(4)+"      "+ChangeValueToTime(keep[3])+"\n"
+                        +"\t Rank "+(5)+"      "+ChangeValueToTime(keep[4]));
         }
         }catch(Exception a){
             JOptionPane.showMessageDialog(tableScore,"No Rank");
@@ -166,35 +175,38 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
             {
                 if(a<60)
                 {
-                    time = "0:"+i;
+                    if(a<10)
+                    time = "00:0"+i;
+                    else
+                        time = "00:"+i;
                 }else if(a>=60&&a<70){
-                    time = "1:0"+(i-60);
+                    time = "01:0"+(i-60);
                 }else if(a>=70&&a<120){
-                    time = "1:"+(i-60);
+                    time = "01:"+(i-60);
                 }else if(a>=120&&a<130){
-                    time = "2:0"+(i-120);
+                    time = "02:0"+(i-120);
                 }else if(a>=130&&a<180){
-                    time = "2:"+(i-120);
+                    time = "02:"+(i-120);
                 }else if(a>=180&&a<190){
-                    time = "3:0"+(i-180);
+                    time = "03:0"+(i-180);
                 }else if(a>=190&&a<240){
-                    time = "3:"+(i-180);
+                    time = "03:"+(i-180);
                 }else if(a>=240&&a<250){
-                    time = "4:0"+(i-240);
+                    time = "04:0"+(i-240);
                 }else if(a>=250&&a<300){
-                    time = "4:"+(i-240);
+                    time = "04:"+(i-240);
                 }else if(a>=300&&a<310){
-                    time = "5:0"+(i-300);
+                    time = "05:0"+(i-300);
                 }else if(a>=310&&a<360){
-                    time = "5:"+(i-300);
+                    time = "05:"+(i-300);
                 }else if(a>=360&&a<370){
-                    time = "6:0"+(i-360);
+                    time = "06:0"+(i-360);
                 }else if(a>=370&&a<420){
-                    time = "6:"+(i-360);
+                    time = "06:"+(i-360);
                 }else if(a>=420&&a<430){
-                    time = "7:0"+(i-420);
+                    time = "07:0"+(i-420);
                 }else if(a>=430&&a<480){
-                    time = "7:"+(i-420);
+                    time = "07:"+(i-420);
                 }
             }
             return time.toString();
@@ -290,7 +302,6 @@ public void checkEnd() {
             try {
                 write = new FileWriter("GameScore.txt",true);
             } catch (IOException ex) {
-                Logger.getLogger(PlateGame.class.getName()).log(Level.SEVERE, null, ex);
             }
 		for(int i=0;i<9;i++){
 			for(int j=0;j<9;j++){
@@ -311,7 +322,7 @@ public void checkEnd() {
                      //winGame
                      JOptionPane.showMessageDialog(tablePanel,"   Finish!!  --   Your time: "+m+":"+s+ns);
             try {
-                write.write(setPoint+" "+m+":"+s+ns+"\t\n");
+                write.write((setPoint-1)+" "+m+":"+s+ns+"\t\n");
                 write.close();
             } catch (IOException ex) {
                 
@@ -439,10 +450,9 @@ public void checkEnd() {
 				Thread.sleep(1000);
 			}
 			catch(Exception e){}
-			
+			setPoint++;
 			GregorianCalendar timer = new GregorianCalendar();
-		
-   			ns++;setPoint++;
+   			ns++;
                         
 		}
 	}
