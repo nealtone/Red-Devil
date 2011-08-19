@@ -57,39 +57,7 @@ public class RandomizeTable {
 			table[randx[i]][randy[i]]= 999 ;	
 		}
                check(randx,randy);
-//  		for(int i=0;i< numOfTable;i=i+1)		{	
-//  			int g=0;
-//  			for(int j=0;j< numOfTable;j++)	{
-//  				if(table[i][j]!= 999){
-//  				   for(int k=0;k< numOfBomb;k++){
-//  						if((i-1)==randx[k]&&(j-1)== randy[k])	{
-//  							table[i][j]++;
-//  						}
-//  						if((i-1==randx[k])&& j == randy[k]){
-//  							table[i][j]++;
-//  						}
-//  						if((i-1)==randx[k]&&(j+1)== randy[k]){
-//  							table[i][j]++;
-//  						}
-//  						if(  i ==randx[k]&&(j-1)== randy[k]){
-//  							table[i][j]++;
-//  						}
-//  						if( i ==randx[k]&&(j+1)== randy[k]){
-//  							table[i][j]++;
-//  						}	
-//  						if((i+1)==randx[k]&&(j-1)== randy[k]){
-//  							table[i][j]++;
-//  						}	
-//  						if((i+1)==randx[k]&& j == randy[k]){
-//  							table[i][j]++;
-//  						}	
-//  						if((i+1)==randx[k]&&(j+1)== randy[k]){
-//  							table[i][j]++;
-//  						}	
-//  					}	
-//  				}
-//			}
-//		}
+
     }
     public void check(int[] randx,int[] randy){
         for(int i=0;i< numOfTable;i=i+1)		{	

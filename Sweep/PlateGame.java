@@ -9,8 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.Icon;
 
@@ -33,7 +31,7 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
         JLabel time  = new JLabel("    time :  00:00");
         JLabel stat = new JLabel("...");
         JButton reset = new JButton("New Game");
-       
+        JButton SetNewBomb = new JButton("SetNewBomb");
         //////////////////////////////
 	//set path bomb image
 	Icon pic =new ImageIcon("D:/tae/Red-Devil/Sweep/bomb.jpg");
@@ -53,10 +51,9 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
         private double d;
         private String str,str2 = "";
 	PlateGame(int numOfBomb1 ){
-           
 		super("GameMineSweeper");
                  numOfBomb = numOfBomb1;      
-		setBounds(200,200,400,480);
+		setBounds(200,200,500,500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
                   System.out.println(numOfBomb);
@@ -81,8 +78,10 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
                 startTab.add(time);
                 startTab.add(reset);
                 startTab.add(High);
+                startTab.add(SetNewBomb);
                 reset.addActionListener(this);
                 High.addActionListener(this);
+                SetNewBomb.addActionListener(this);
                 add(startTab,"North");
 		add(tablePanel,"Center");
                 
@@ -167,6 +166,11 @@ class PlateGame extends JFrame implements ActionListener,Runnable,MouseListener{
         }catch(Exception a){
             JOptionPane.showMessageDialog(tableScore,"No Rank");
         }
+    if(e.getSource()==SetNewBomb){
+        setVisible(false);
+        GetBomb game = new GetBomb();
+        game.setVisible(true);
+    }
         }
         //Maximum 7 munit
   public String ChangeValueToTime(int a){
